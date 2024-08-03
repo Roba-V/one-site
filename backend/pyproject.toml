@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "one-site-api"
+version = "0.1.0"
+description = "One Site API"
+authors = ["Roba-V <roba@vrstu.net>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.112.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
