@@ -23,20 +23,24 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install poetry
-          cd backend
-          poetry install --no-root
+        run: bash manage.sh init
 
       - name: Run Flake8
-        run: flake8 --config backend/setup.cfg
+        run: |
+          source backend/venv/bin/activate
+          flake8 --config backend/setup.cfg
 
       - name: Run Black
-        run: black backend
+        run: |
+          source backend/venv/bin/activate
+          black backend
 
       - name: Run isort
-        run: isort backend
+        run: |
+          source backend/venv/bin/activate
+          isort backend
 
       - name: Run mypy
-        run: mypy --config-file backend/pyproject.toml backend
+        run: |
+          source backend/venv/bin/activate
+          mypy --config-file backend/pyproject.toml backend
