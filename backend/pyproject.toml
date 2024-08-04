@@ -21,10 +21,6 @@ pre-commit = "^3.8.0"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-[flake8]
-max-line-length = 88
-exclude = "venv"
-
 [tool.black]
 line-length = 88
 
