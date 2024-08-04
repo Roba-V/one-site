@@ -1,0 +1,39 @@
+name: Lint
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  backend-linter:
+    runs-on: ubuntu-latest
+    if: contains(github.base_ref, 'develop')
+    strategy:
+      max-parallel: 2
+      matrix:
+        python-version: ['3.11']
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          bash manage.sh init
+
+      - name: Run Flake8
+        run: flake8 --config backend/setup.cfg
+
+      - name: Run Black
+        run: black backend
+
+      - name: Run isort
+        run: isort backend
+
+      - name: Run mypy
+        run: mypy --config-file backend/pyproject.toml backend
