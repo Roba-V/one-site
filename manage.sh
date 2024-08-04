@@ -32,6 +32,12 @@ case $1 in
     python -m pip install poetry > /dev/null
     poetry install --no-root > /dev/null
     print_result $? $num
+
+    print_message "info"
+    print_count "Installing pre-commit hooks"
+    num=$?
+    pre-commit install > /dev/null
+    print_result $? $num
     ;;
 
   # Options is not specified
