@@ -27,6 +27,8 @@ case $1 in
       exit 1
     fi
 
+    source .venv/bin/activate
+
     print_message "info"
     print_count "Installing pre-commit hooks"
     num=$?
