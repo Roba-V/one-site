@@ -1,7 +1,8 @@
 #!/bin/bash
 
-source scripts/constants.sh
 source scripts/functions.sh
+
+OPTIONS=("init" "start")
 
 case $1 in
 
@@ -13,30 +14,24 @@ case $1 in
     check_python_version
     cd backend || exit
 
-    print_message "info"
-    if [ ! -e venv ]; then
-      print_count "Creating virtual environments"
+    if [ -f pyproject.toml ]; then
+      print_message "info"
+      print_count "Installing all dependencies"
       num=$?
-      python -m venv venv > /dev/null
+      poetry config virtualenvs.in-project true
+      poetry install --no-root > /dev/null 2>&1
       print_result $? $num
     else
-      printf "Found an existing virtual environments.\n"
+      print_message "err"
+      printf "\033[31mCannot find pyproject.toml.\033[m\n"
+      exit 1
     fi
-
-    source venv/bin/activate
-
-    print_message "info"
-    print_count "Installing all dependencies"
-    num=$?
-    python -m pip install --upgrade pip > /dev/null
-    python -m pip install poetry > /dev/null
-    poetry install --no-root > /dev/null
-    print_result $? $num
 
     print_message "info"
     print_count "Installing pre-commit hooks"
     num=$?
-    pre-commit install > /dev/null
+    cd .. || exit
+    pre-commit install > /dev/null 2>&1
     print_result $? $num
     ;;
 
@@ -44,7 +39,7 @@ case $1 in
   * )
 
     print_message "err"
-    printf "Missing necessary command line arguments.\n"
+    printf "\033[31mMissing necessary command line arguments.\033[m\n"
     exit 1
     ;;
 
