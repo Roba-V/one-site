@@ -9,6 +9,7 @@ readme = "README.md"
 python = "^3.11"
 fastapi = "^0.112.0"
 uvicorn = {extras = ["standard"], version = "^0.30.5"}
+docformatter = "^1.7.5"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.8.0"
@@ -30,3 +31,7 @@ profile = "black"
 [tool.mypy]
 python_version = "3.11"
 exclude = ".venv"
+
+[tool.docformatter]
+in-place = true
+pre-summary-newline = true
