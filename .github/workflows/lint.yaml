@@ -46,3 +46,8 @@ jobs:
         run: |
           source backend/.venv/bin/activate
           mypy --config-file backend/pyproject.toml backend
+
+      - name: Run docformatter
+        run: |
+          source backend/.venv/bin/activate
+          mypy --config-file backend/pyproject.toml backend/**/*.py
