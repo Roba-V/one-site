@@ -31,7 +31,7 @@ case $1 in
     print_count "Installing pre-commit hooks"
     num=$?
     cd .. || exit
-    pre-commit install > /dev/null 2>&1
+    pre-commit install
     print_result $? $num
     ;;
 
