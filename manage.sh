@@ -30,6 +30,7 @@ case $1 in
     print_message "info"
     print_count "Installing pre-commit hooks"
     num=$?
+    cd .. || exit
     pre-commit install > /dev/null 2>&1
     print_result $? $num
     ;;
