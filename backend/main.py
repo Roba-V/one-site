@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 
-api = FastAPI()
+app = FastAPI()
 
 
-@api.get("/")
-def home():
+@app.get("/")
+async def home():
     """
     Hello World API.
 
