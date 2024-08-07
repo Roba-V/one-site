@@ -15,9 +15,9 @@ function print_count() {
 function print_process() {
 
   printf "\033[34m"
-  printf -- "-%0.s" {0..5}
+  printf -- "=%0.s" {0..5}
   print_count " $1 "
-  printf -- "-%0.s" $(seq 1 $((60-$?)))
+  printf -- "=%0.s" $(seq 1 $((60-$?)))
   printf "\033[m\n"
 
 }
@@ -47,13 +47,14 @@ function print_message() {
 function print_result() {
 
   printf " "
-  printf ".%0.s" $(seq 1 $((50-$2)))
+  printf "\033[37m.%0.s\033[m" $(seq 1 $((50-$2)))
 
   if [ "$1" -eq 0 ]; then
     printf "\033[32m Success \033[m\n"
   else
     printf "\033[31m Failed! \033[m\n"
   fi
+  return "$1"
 
 }
 
