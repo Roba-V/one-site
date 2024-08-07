@@ -1,0 +1,8 @@
+#file: noinspection YAMLIncompatibleTypes
+
+extends:
+  - '@open-turo/commitlint-config-conventional'
+
+rules:
+  header-max-length: [2, 'always', 72]
+  body-leading-blank: [2, 'always']

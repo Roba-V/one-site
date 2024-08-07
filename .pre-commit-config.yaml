@@ -1,0 +1,71 @@
+default_install_hook_types:
+  - pre-commit
+  - commit-msg
+  - pre-push
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-yaml
+        name: Check yaml files
+      - id: check-toml
+        name: Check toml files
+      - id: check-added-large-files
+        name: Check large files
+      - id: end-of-file-fixer
+        name: Fix end of files
+        exclude: ^.idea/
+      - id: trailing-whitespace
+        name: Trim trailing whitespace
+
+  - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
+    rev: v9.11.0
+    hooks:
+      - id: commitlint
+        name: Validate commit messages
+        stages: [commit-msg]
+        additional_dependencies: ['@open-turo/commitlint-config-conventional']
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.0.0
+    hooks:
+      - id: flake8
+        name: Linting with Flake8
+        args: ['--config', 'backend/setup.cfg']
+
+  - repo: https://github.com/psf/black
+    rev: 24.2.0
+    hooks:
+      - id: black
+        name: Linting with Black
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        name: Linting with isort
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.8.0
+    hooks:
+      - id: mypy
+        name: Linting with mypy
+
+  - repo: https://github.com/PyCQA/docformatter
+    rev: v1.7.5
+    hooks:
+      - id: docformatter
+        name: Linting with docformatter
+        additional_dependencies: [tomli]
+        args: ['--config', 'backend/pyproject.toml']
+
+  - repo: local
+    hooks:
+      - id: test-backend
+        name: Testing backend source code
+        stages:
+          - pre-push
+        entry: bash manage.sh test
+        language: system
+        pass_filenames: false
