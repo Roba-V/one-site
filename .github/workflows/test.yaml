@@ -2,15 +2,13 @@ name: Test
 
 on:
   workflow_run:
-    workflows:
-      - Lint
+    workflows: ['Lint']
     types:
       - completed
 
 jobs:
   backend-tester:
     runs-on: ubuntu-latest
-    if: contains(github.base_ref, 'develop')
     strategy:
       max-parallel: 2
       matrix:
