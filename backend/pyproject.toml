@@ -38,3 +38,4 @@ exclude = ".venv"
 [tool.docformatter]
 in-place = true
 pre-summary-newline = true
+recursive = true

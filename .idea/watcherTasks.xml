@@ -82,7 +82,7 @@
       <envs />
     </TaskOptions>
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="$FilePath$" />
+      <option name="arguments" value="--config $ProjectFileDir$/backend/pyproject.toml $FilePath$" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />
