@@ -59,3 +59,13 @@ repos:
         name: Linting with docformatter
         additional_dependencies: [tomli]
         args: ['--config', 'backend/pyproject.toml']
+
+  - repo: local
+    hooks:
+      - id: test-backend
+        name: Testing backend source code
+        stages:
+          - pre-push
+        entry: bash manage.sh test
+        language: system
+        pass_filenames: false
