@@ -17,8 +17,5 @@ describe('IncreaseButton', () => {
 
     fireEvent.click(button)
     expect(screen.getByText('count is 1')).toBeDefined()
-
-    // const logo = screen.getByRole('img', { name: /logo/ })
-    // await userEvent.click(logo)
   })
 })

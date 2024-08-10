@@ -20,6 +20,7 @@ export default defineConfig({
         '**/{eslint,vite}.config.*',
         'src/main.tsx',
       ],
+      thresholds: { '100': true },
     },
   },
 })
