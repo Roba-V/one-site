@@ -62,12 +62,12 @@ case $1 in
       check_python_version
       cd "$APP_DIR/backend" || exit
 
-      # install dependencies
+      # install dependencies of backend
       if [ -f pyproject.toml ]; then
         process="
           poetry config virtualenvs.in-project true;
           poetry install --no-root >> $LOG_FILE"
-        run_process "Installing all dependencies" "$process"
+        run_process "Installing all dependencies of backend" "$process"
       else
         print_msg_level "FATAL"
         file=$(print_with_style "pyproject.toml" "MAGENTA")
@@ -84,7 +84,10 @@ case $1 in
 
     # Initialize the frontend
     if [ "$2" = "${OPTIONS[0]}" ] || [ "$2" = "" ] || [ "$3" = "${OPTIONS[3]}" ]; then
-      echo ""
+      cd "$APP_DIR/frontend" || exit
+      # install dependencies of frontend
+      process="yarn >> $LOG_FILE"
+      run_process "Installing all dependencies of frontend" "$process"
     fi
 
     exit 0
@@ -96,7 +99,7 @@ case $1 in
 
     rst=0
 
-    # test of backend
+    # test backend
     if [ "$2" = "${OPTIONS[2]}" ] || [ "$2" = "" ]; then
       cd "$APP_DIR/backend" || exit
 
@@ -110,15 +113,28 @@ case $1 in
 
       # run coverage
       process="coverage report --show-missing"
-      run_process "Checking coverage of tests" "$process" "$LOG_FILE"
+      run_process "Checking coverage of tests for backend" "$process" "$LOG_FILE"
       if [ $rst -ne $? ]; then rst=1; fi
 
       # create coverage report
       process="coverage html --title ${APP_NAME}API >> $LOG_FILE"
-      run_process "Generating Code Coverage HTML Report" "$process"
+      run_process "Generating Code Coverage HTML Report for backend" "$process"
       if [ $rst -ne $? ]; then rst=1; fi
       detail_str="See flowing file to review the code coverage HTML report.\n"
       detail_str="${detail_str}file://$APP_DIR/backend/htmlcov/index.html"
+      print_details "$detail_str"
+    fi
+
+    # test frontend
+    if [ "$2" = "${OPTIONS[3]}" ] || [ "$2" = "" ]; then
+      cd "$APP_DIR/frontend" || exit
+
+      # run unit test
+      process="yarn coverage 2>&1"
+      run_process "Running unit tests and coverage for frontend" "$process" "$LOG_FILE" "|"
+      if [ $rst -ne $? ]; then rst=1; fi
+      detail_str="See flowing file to review the code coverage HTML report.\n"
+      detail_str="${detail_str}file://$APP_DIR/frontend/coverage/index.html"
       print_details "$detail_str"
     fi
 

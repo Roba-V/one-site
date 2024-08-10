@@ -178,6 +178,7 @@ function check_python_version {
 # $1 - process name
 # $2 - commands text
 # $3 - detailed information output to
+# $4 - string to filter detailed information
 # Return - process result
 function run_process {
   print_msg_level "INFO"
@@ -186,7 +187,12 @@ function run_process {
   rst=$?
   print_result "$1" $rst
   if [ "$detail_str" != "" ]; then
-    print_details "$detail_str"
+    if [ "$4" != "" ]; then
+      a=$(echo "$detail_str" | grep "|")
+      print_details "$a"
+    else
+      print_details  "$detail_str"
+    fi
     if [ "$3" != "" ]; then
       echo "$detail_str" >> "$3"
     fi
