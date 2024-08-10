@@ -1,99 +1,134 @@
 #!/bin/bash
 
-source scripts/functions.sh
+# commands of manage.sh
+PROCESS=("init" "start" "test")
+# options of manage.sh
+OPTIONS=("--dev" "--prod" "--back" "--front")
+# current date time
+DATETIME="$(date '+%Y%m%d%H%M%S')"
+# absolute path of the app management script
+APP_PATH=$(realpath -- "$0")
+# absolute path of the app directory
+APP_DIR=$(dirname "$APP_PATH")
+# absolute path of log folder
+LOG_DIR="$APP_DIR/logs"
+# absolute path of log file
+LOG_FILE="$APP_DIR/logs/$1_$DATETIME.log"
 
-OPTIONS=("init" "start" "test")
+source "$APP_DIR/.env"
+source "$APP_DIR/scripts/functions.sh"
+
+mkdir -p "$LOG_DIR"
 
 case $1 in
-
   # Initialization Process
-  "${OPTIONS[0]}" )
-
+  "${PROCESS[0]}" )
     print_process "Initializing Application"
 
-    check_python_version
-    cd backend || exit
-
-    if [ -f pyproject.toml ]; then
-      print_message "info"
-      print_count "Installing all dependencies"
-      num=$?
-      poetry config virtualenvs.in-project true
-      poetry install --no-root > /dev/null 2>&1
-      print_result $? $num
+    # validate options
+    if [ "$2" = "${OPTIONS[0]}" ] || [ "$2" = "" ]; then
+      if [ "$3" != "" ]; then
+        print_msg_level "WARN"
+        option=$(print_with_style "$3" "YELLOW")
+        print_n_with_style "You don't need to specify Option $option."
+      else
+        print_msg_level "INFO"
+        mode=$(print_with_style "Development" "CYAN")
+        print_n_with_style "Initializing Application in $mode Mode."
+      fi
+    elif [ "$2" = "${OPTIONS[1]}" ]; then
+      if [ "$3" = "${OPTIONS[2]}" ] || [ "$3" = "" ]; then
+        app=$(print_with_style "Backend" "CYAN")
+      elif [ "$3" = "${OPTIONS[3]}" ]; then
+        app=$(print_with_style "Frontend" "CYAN")
+      else
+        print_msg_level "FATAL"
+        option=$(print_with_style "$3" "MAGENTA")
+        print_n_with_style "Unknown Option $option!"
+        exit 1
+      fi
+      mode=$(print_with_style "Production" "CYAN")
+      print_msg_level "INFO"
+      print_n_with_style "Initializing $app Application in $mode Mode."
     else
-      print_message "err"
-      printf "\033[31mCannot find pyproject.toml.\033[m\n"
+      print_msg_level "FATAL"
+      option=$(print_with_style "$2" "MAGENTA")
+      print_n_with_style "Unknown Option $option!"
       exit 1
     fi
 
-    source .venv/bin/activate
+    # Initialize the backend
+    if [ "$3" != "${OPTIONS[3]}" ]; then
+      check_python_version
+      cd "$APP_DIR/backend" || exit
 
-    print_message "info"
-    print_count "Installing pre-commit hooks"
-    num=$?
-    cd .. || exit
-    pre-commit install > /dev/null 2>&1
-    print_result $? $num
+      # install dependencies
+      if [ -f pyproject.toml ]; then
+        process="
+          poetry config virtualenvs.in-project true;
+          poetry install --no-root >> $LOG_FILE"
+        run_process "Installing all dependencies" "$process"
+      else
+        print_msg_level "FATAL"
+        file=$(print_with_style "pyproject.toml" "MAGENTA")
+        print_n_with_style "Cannot find file $file."
+        exit 1
+      fi
+
+      source .venv/bin/activate
+      cd .. || exit
+
+      process="pre-commit install >> $LOG_FILE"
+      run_process "Installing pre-commit hooks" "$process"
+    fi
+
+    # Initialize the frontend
+    if [ "$2" = "${OPTIONS[0]}" ] || [ "$2" = "" ] || [ "$3" = "${OPTIONS[3]}" ]; then
+      echo ""
+    fi
+
+    exit 0
     ;;
 
   # Unit Test Process
-  "${OPTIONS[2]}" )
-
+  "${PROCESS[2]}" )
     print_process "Testing Application"
-
-    DATETIME="$(date '+%Y%m%d_%H%M%S')"
-    LOG_DIR="${PWD}/logs"
-    LOG_FILE="${PWD}/logs/${DATETIME}.log"
 
     rst=0
 
-    cd backend || exit
-    source .venv/bin/activate
+    # test of backend
+    if [ "$2" = "${OPTIONS[2]}" ] || [ "$2" = "" ]; then
+      cd "$APP_DIR/backend" || exit
 
-    print_message "info"
-    print_count "Running test cases"
-    num=$?
-    mkdir -p "$LOG_DIR"
-    printf "[Execute pytest]\n" >> "$LOG_FILE"
-    coverage run --source=. -m pytest  >> "$LOG_FILE"
-    print_result $? $num
-    if [ $rst -ne $? ]; then rst=1; fi
+      # run unit test
+      process="coverage run --source=. -m pytest >> $LOG_FILE"
+      run_process "Running unit tests for backend" "$process"
+      if [ $rst -ne $? ]; then rst=1; fi
+      detail_str="See flowing log file for more details.\n"
+      detail_str="${detail_str}file://$LOG_FILE"
+      print_details "$detail_str"
 
-    # Output test.log message
-    printf "\t\033[37mSee \033[m"
-    printf "\e]8;;file://%s\e\\%s\e]8;;\e\\" "$LOG_FILE" "log file"
-    printf "\033[37m for more details.\033[m\n"
+      # run coverage
+      process="coverage report --show-missing"
+      run_process "Checking coverage of tests" "$process" "$LOG_FILE"
+      if [ $rst -ne $? ]; then rst=1; fi
 
-    print_message "info"
-    print_count "Checking coverage of tests"
-    num=$?
-    printf "\n[Coverage Report]\n" >> "$LOG_FILE"
-    cr_rst="$(coverage report --show-missing)"
-    echo "$cr_rst" >> "$LOG_FILE"
-    printf "\n[Generate Code Coverage HTML Report]\n" >> "$LOG_FILE"
-    coverage html --title one-site-api  >> "$LOG_FILE"
-    print_result $? $num
-    if [ $rst -ne $? ]; then rst=1; fi
-
-    COVERAGE_FILE="${PWD}/htmlcov/index.html"
-
-    # Output the coverage info
-    printf "\t\033[37m"
-    echo "${cr_rst//$'\n'/$'\n\t'}"
-    printf "\n\t\033[37mClick \033[m"
-    printf "\e]8;;file://%s\e\\%s\e]8;;\e\\" "$COVERAGE_FILE" "here"
-    printf "\033[37m to review the code coverage HTML report.\033[m\n"
-    printf "\033[m\n"
+      # create coverage report
+      process="coverage html --title ${APP_NAME}API >> $LOG_FILE"
+      run_process "Generating Code Coverage HTML Report" "$process"
+      if [ $rst -ne $? ]; then rst=1; fi
+      detail_str="See flowing file to review the code coverage HTML report.\n"
+      detail_str="${detail_str}file://$APP_DIR/backend/htmlcov/index.html"
+      print_details "$detail_str"
+    fi
 
     exit $rst
     ;;
 
   # Options is not specified
   * )
-
-    print_message "err"
-    printf "\033[31mMissing necessary command line arguments.\033[m\n"
+    print_msg_level "FATAL"
+    print_n_with_style "Missing necessary command line arguments." "MAGENTA"
     exit 1
     ;;
 
