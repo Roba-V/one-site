@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install poetry
-          bash manage.sh init
+          bash manage.sh init --back
 
       - name: Run Flake8
         run: |
@@ -51,3 +51,34 @@ jobs:
         run: |
           source backend/.venv/bin/activate
           docformatter --config backend/pyproject.toml -r backend
+
+  frontend-linter:
+    runs-on: ubuntu-latest
+    if: contains(github.base_ref, 'develop')
+    strategy:
+      max-parallel: 2
+      matrix:
+        node-version: ['20']
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: |
+          npm install --global yarn
+          bash manage.sh init --front
+
+      - name: Run Prettier
+        run: |
+          cd frontend
+          yarn lint
+
+      - name: Run ESLint
+        run: |
+          cd frontend
+          npx prettier .
