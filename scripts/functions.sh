@@ -188,8 +188,8 @@ function run_process {
   print_result "$1" $rst
   if [ "$detail_str" != "" ]; then
     if [ "$4" != "" ]; then
-      a=$(echo "$detail_str" | grep "|")
-      print_details "$a"
+      refine_str=$(echo "$detail_str" | grep "|")
+      print_details "$refine_str"
     else
       print_details  "$detail_str"
     fi

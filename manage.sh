@@ -15,6 +15,12 @@ LOG_DIR="$APP_DIR/logs"
 # absolute path of log file
 LOG_FILE="$APP_DIR/logs/$1_$DATETIME.log"
 
+# check options for Execution Mode
+IS_BACK=$(echo "$@" | grep "${OPTIONS[2]:2}")
+IS_FRONT=$(echo "$@" | grep "${OPTIONS[3]:2}")
+IS_NOT_ALL="${IS_BACK}${IS_FRONT}"
+IS_PROD=$(echo "$@" | grep "${OPTIONS[1]:2}")
+
 source "$APP_DIR/.env"
 source "$APP_DIR/scripts/functions.sh"
 
@@ -25,40 +31,28 @@ case $1 in
   "${PROCESS[0]}" )
     print_process "Initializing Application"
 
-    # validate options
-    if [ "$2" = "${OPTIONS[0]}" ] || [ "$2" = "" ]; then
-      if [ "$3" != "" ]; then
-        print_msg_level "WARN"
-        option=$(print_with_style "$3" "YELLOW")
-        print_n_with_style "You don't need to specify Option $option."
-      else
-        print_msg_level "INFO"
-        mode=$(print_with_style "Development" "CYAN")
-        print_n_with_style "Initializing Application in $mode Mode."
-      fi
-    elif [ "$2" = "${OPTIONS[1]}" ]; then
-      if [ "$3" = "${OPTIONS[2]}" ] || [ "$3" = "" ]; then
-        app=$(print_with_style "Backend" "CYAN")
-      elif [ "$3" = "${OPTIONS[3]}" ]; then
-        app=$(print_with_style "Frontend" "CYAN")
-      else
-        print_msg_level "FATAL"
-        option=$(print_with_style "$3" "MAGENTA")
-        print_n_with_style "Unknown Option $option!"
-        exit 1
-      fi
-      mode=$(print_with_style "Production" "CYAN")
+    # set Execution Mode
+    if [ "$IS_PROD" = "" ]; then
+      # Development Mode
       print_msg_level "INFO"
-      print_n_with_style "Initializing $app Application in $mode Mode."
+      mode=$(print_with_style "Development" "CYAN")
     else
-      print_msg_level "FATAL"
-      option=$(print_with_style "$2" "MAGENTA")
-      print_n_with_style "Unknown Option $option!"
-      exit 1
+      # Production Mode
+      print_msg_level "INFO"
+      mode=$(print_with_style "Production" "CYAN")
     fi
 
+    if [ "$IS_BACK" != "" ] && [ "$IS_FRONT" = "" ]; then
+      side=$(print_with_style " Backend" "CYAN")
+    elif [ "$IS_BACK" = "" ] && [ "$IS_FRONT" != "" ]; then
+      side=$(print_with_style " Frontend" "CYAN")
+    else
+      :
+    fi
+    print_n_with_style "Initializing$side Application in $mode Mode."
+
     # Initialize the backend
-    if [ "$3" != "${OPTIONS[3]}" ]; then
+    if [ "$IS_BACK" != "" ] || [ "$IS_NOT_ALL" = "" ]; then
       check_python_version
       cd "$APP_DIR/backend" || exit
 
@@ -83,7 +77,7 @@ case $1 in
     fi
 
     # Initialize the frontend
-    if [ "$2" = "${OPTIONS[0]}" ] || [ "$2" = "" ] || [ "$3" = "${OPTIONS[3]}" ]; then
+    if [ "$IS_FRONT" != "" ] || [ "$IS_NOT_ALL" = "" ]; then
       cd "$APP_DIR/frontend" || exit
       # install dependencies of frontend
       process="yarn >> $LOG_FILE"
@@ -100,7 +94,7 @@ case $1 in
     rst=0
 
     # test backend
-    if [ "$2" = "${OPTIONS[2]}" ] || [ "$2" = "" ]; then
+    if [ "$IS_BACK" != "" ] || [ "$IS_NOT_ALL" = "" ]; then
       cd "$APP_DIR/backend" || exit
 
       # run unit test
@@ -117,7 +111,7 @@ case $1 in
       if [ $rst -ne $? ]; then rst=1; fi
 
       # create coverage report
-      process="coverage html --title ${APP_NAME}API >> $LOG_FILE"
+      process="coverage html --title '${APP_NAME} API' >> $LOG_FILE"
       run_process "Generating Code Coverage HTML Report for backend" "$process"
       if [ $rst -ne $? ]; then rst=1; fi
       detail_str="See flowing file to review the code coverage HTML report.\n"
@@ -126,7 +120,7 @@ case $1 in
     fi
 
     # test frontend
-    if [ "$2" = "${OPTIONS[3]}" ] || [ "$2" = "" ]; then
+    if [ "$IS_FRONT" != "" ] || [ "$IS_NOT_ALL" = "" ]; then
       cd "$APP_DIR/frontend" || exit
 
       # run unit test

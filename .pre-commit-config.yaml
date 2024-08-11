@@ -66,7 +66,7 @@ repos:
         name: Testing backend source code
         stages:
           - pre-push
-        entry: bash manage.sh test
+        entry: bash manage.sh test --back
         language: system
         pass_filenames: false
 
@@ -95,3 +95,13 @@ repos:
           - --ignore-path
           - frontend/.prettierignore
           - frontend/**/*
+
+  - repo: local
+    hooks:
+      - id: test-frontend
+        name: Testing frontend source code
+        stages:
+          - pre-push
+        entry: bash manage.sh test --front
+        language: system
+        pass_filenames: false
