@@ -97,6 +97,8 @@ case $1 in
     if [ "$IS_BACK" != "" ] || [ "$IS_NOT_ALL" = "" ]; then
       cd "$APP_DIR/backend" || exit
 
+      source .venv/bin/activate
+
       # run unit test
       process="coverage run --source=. -m pytest >> $LOG_FILE"
       run_process "Running unit tests for backend" "$process"
