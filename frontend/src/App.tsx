@@ -1,5 +1,6 @@
 import { Box, Button, Center, Grid, GridItem } from '@chakra-ui/react'
-import { useState } from 'react'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
 
 import viteLogo from '/vite.svg'
 
@@ -7,6 +8,14 @@ import reactLogo from './assets/react.svg'
 
 function App() {
   const [count, setCount] = useState(0)
+  const [message, setMessage] = useState<string>()
+
+  useEffect(() => {
+    axios.get('http://localhost:8000/').then((rsp) => {
+      console.log(rsp)
+      setMessage(rsp.data['message'])
+    })
+  }, [])
 
   return (
     <>
@@ -28,6 +37,7 @@ function App() {
           </GridItem>
         </Grid>
       </Box>
+      <Box p={8}>{message}</Box>
       <Box p={8} maxW="960px" mx="auto">
         <Center>
           abc
