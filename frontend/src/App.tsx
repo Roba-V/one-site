@@ -11,7 +11,8 @@ function App() {
   const [message, setMessage] = useState<string>()
 
   useEffect(() => {
-    axios.get('http://localhost:8000/').then((rsp) => {
+    console.log(import.meta.env)
+    axios.get(import.meta.env.APP_API_URL + '/hello_world/').then((rsp) => {
       console.log(rsp)
       setMessage(rsp.data['message'])
     })
