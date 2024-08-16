@@ -1,25 +1,18 @@
 import os
-from typing import Annotated, Any, List
+from typing import Annotated, List
 
 from pydantic import AnyUrl, BeforeValidator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from backend.common import constants as cst
-
-
-def parse_cors(v: Any) -> list[str] | str:
-    if isinstance(v, str) and not v.startswith("["):
-        return [i.strip() for i in v.split(",")]
-    elif isinstance(v, list | str):
-        return v
-    raise (ValueError(v))
+from backend.common.utils.tools import parse_list
 
 
 class Configuration(BaseSettings):
     """App configuration class."""
 
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=cst.FILE_ENV,
         env_file_encoding=cst.ENCODING_UTF8,
         env_ignore_empty=True,
         extra="ignore",
@@ -40,7 +33,7 @@ class Configuration(BaseSettings):
     API_NAME: str = "One API"
     API_SUMMARY: str = ""
     API_URL: str = "/api"
-    API_CORS_ORIGINS: Annotated[List[AnyUrl] | str, BeforeValidator(parse_cors)] = []
+    API_CORS_ORIGINS: Annotated[List[AnyUrl] | str, BeforeValidator(parse_list)] = []
     # Name of log file
     LOG_FILE_NAME: str = cst.LOG_FILE_NAME
     # Log level

@@ -21,6 +21,9 @@ PATH_ROOT = str(Path(__file__).resolve().parent.parent.parent)
 # Path of Log file output
 PATH_LOG = os.path.join(PATH_ROOT, "logs")
 
+# Environment file name
+FILE_ENV = (".env", ".env.staging", ".env.production")
+
 # Name of log file
 LOG_FILE_NAME = "api"
 # Log level
