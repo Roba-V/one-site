@@ -12,7 +12,7 @@ function App() {
 
   useEffect(() => {
     console.log(import.meta.env)
-    axios.get(import.meta.env.APP_API_URL + '/hello_world/').then((rsp) => {
+    axios.get('http://' + import.meta.env.APP_DOMAIN + '/hello_world/').then((rsp) => {
       console.log(rsp)
       setMessage(rsp.data['message'])
     })
