@@ -34,6 +34,7 @@ class Configuration(BaseSettings):
     API_SUMMARY: str = ""
     API_URL: str = "/api"
     API_CORS_ORIGINS: Annotated[List[AnyUrl] | str, BeforeValidator(parse_list)] = []
+    APP_IS_SSL: bool = False
     # Name of log file
     LOG_FILE_NAME: str = cst.LOG_FILE_NAME
     # Log level
