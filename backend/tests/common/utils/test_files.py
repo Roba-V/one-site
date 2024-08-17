@@ -7,7 +7,7 @@ from parameterized import parameterized
 from backend.common.utils import files
 
 
-class TestFiles(unittest.TestCase):
+class FilesTestCase(unittest.TestCase):
     """Utils files module's test cases."""
 
     # path of temporary folder for saving test data

@@ -5,7 +5,7 @@ from parameterized import parameterized
 from backend.common.utils.tools import parse_list
 
 
-class TestTools(unittest.TestCase):
+class ToolsTestCase(unittest.TestCase):
     """Utils tools module's test cases."""
 
     @parameterized.expand(

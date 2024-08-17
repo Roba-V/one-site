@@ -4,7 +4,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 
-class TestConfiguration(unittest.TestCase):
+class ConfigurationTestCase(unittest.TestCase):
     """Configuration class's test cases."""
 
     @patch("backend.common.constants.FILE_ENV", "../.env.test")
