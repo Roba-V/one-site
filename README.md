@@ -1,5 +1,9 @@
 # One Site
 
+[![Env: Python](https://img.shields.io/badge/python-v3.11-blue?logo=python)](https://docs.python.org/3.11/)
+[![Env: FastAPI](https://img.shields.io/badge/FastAPI-v0.112.0-009485?logo=fastapi)](https://fastapi.tiangolo.com/)
+[![Env: Node](https://img.shields.io/badge/Node.js-v22.5-417e38?logo=node.js)](https://nodejs.org/)
+[![Env: React](https://img.shields.io/badge/React-v18.3.1-087ea4?logo=react)](https://react.dev/)
 [![Editor: PyCharm](https://img.shields.io/badge/PyCharm-000?logo=pycharm)](https://pleiades.io/help/pycharm/getting-started.html)
 
 My personal website created with FastAPI and React.
