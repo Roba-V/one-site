@@ -124,6 +124,15 @@ class Log:
         """
         return cls.__logger
 
+    @classmethod
+    def reset(cls):
+        """
+        Reset an instance for testing.
+
+        Just for Testing.
+        """
+        cls.__instance = None
+
 
 Log.init_logger()
 logger = Log.get_logger()

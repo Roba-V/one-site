@@ -27,6 +27,7 @@ class ConfigurationTestCase(unittest.TestCase):
         self.assertEqual(config.LOG_ROTATING_BACKUP_COUNT, 300)
 
     def test_log_file_path(self) -> None:
+        """Test log file path acquisition process."""
         from backend.common.core.config import config
 
         self.assertEqual(
