@@ -64,7 +64,7 @@ class Log:
         """
         try:
             if not cls.__instance:
-                # cls.__instance = super().__new__(cls)
+                cls.__instance = super().__new__(cls)
                 cls.__cfg = config
                 # create app logger
                 cls.__logger = fastapi.logger.logger
