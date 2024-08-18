@@ -2,7 +2,7 @@ import os
 import shutil
 import unittest
 
-from parameterized import parameterized
+from parameterized import parameterized  # type: ignore
 
 from backend.common.utils import files
 

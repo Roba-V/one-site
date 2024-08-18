@@ -1,6 +1,6 @@
 import unittest
 
-from parameterized import parameterized
+from parameterized import parameterized  # type: ignore
 
 from backend.common.utils.tools import parse_list
 
