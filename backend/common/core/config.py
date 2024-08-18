@@ -30,9 +30,9 @@ class Configuration(BaseSettings):
     # Console output
     CONSOLE: bool = False
     # API configurations
-    API_NAME: str = "One API"
+    API_NAME: str = ""
     API_SUMMARY: str = ""
-    API_URL: str = "/api"
+    API_URL: str = ""
     API_CORS_ORIGINS: Annotated[List[AnyUrl] | str, BeforeValidator(parse_list)] = []
     APP_IS_SSL: bool = False
     # Name of log file

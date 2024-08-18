@@ -18,16 +18,18 @@ API_VERSION = "0.1.0"
 
 # Root path
 PATH_ROOT = str(Path(__file__).resolve().parent.parent.parent)
+# Path of backend
+PATH_BACKEND = os.path.join(PATH_ROOT, "backend")
 # Path of Log file output
 PATH_LOG = os.path.join(PATH_ROOT, "logs")
 
 # Environment file name
-FILE_ENV = (".env", ".env.staging", ".env.production")
+FILE_ENV = ("../.env.test", ".env", ".env.staging", ".env.production")
 
 # Name of log file
 LOG_FILE_NAME = "api"
 # Log level
-LOG_LEVEL_INFO = "DEBUG"
+LOG_LEVEL_INFO = "INFO"
 # Logo message format
 LOG_FORMAT = "%(asctime)s %(levelname)s in %(module)s: %(message)s"
 # Rotating interval(D: Days, H: Hours, M: Minutes，S: Seconds)

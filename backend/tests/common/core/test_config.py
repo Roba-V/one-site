@@ -1,13 +1,11 @@
 import os
 import unittest
 from pathlib import Path
-from unittest.mock import patch
 
 
 class ConfigurationTestCase(unittest.TestCase):
     """Configuration class's test cases."""
 
-    @patch("backend.common.constants.FILE_ENV", "../.env.test")
     def test_load_config_items_from_env(self) -> None:
         """Test config items from .env.test file."""
         from backend.common.core.config import config
@@ -28,7 +26,6 @@ class ConfigurationTestCase(unittest.TestCase):
         self.assertEqual(config.LOG_ROTATING_WHEN, "H")
         self.assertEqual(config.LOG_ROTATING_BACKUP_COUNT, 300)
 
-    @patch("backend.common.constants.FILE_ENV", "../.env.test")
     def test_log_file_path(self) -> None:
         from backend.common.core.config import config
 
