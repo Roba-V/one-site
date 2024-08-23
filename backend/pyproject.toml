@@ -10,6 +10,11 @@ python = "^3.11"
 fastapi = "^0.112.0"
 uvicorn = {extras = ["standard"], version = "^0.30.5"}
 pydantic-settings = "^2.4.0"
+sqlmodel = "^0.0.21"
+asyncpg = "^0.29.0"
+pydantic = "^2.8.2"
+psycopg2-binary = "^2.9.9"
+greenlet = "^3.0.3"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.8.0"
