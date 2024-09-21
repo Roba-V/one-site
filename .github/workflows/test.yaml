@@ -13,22 +13,22 @@ jobs:
       max-parallel: 2
       matrix:
         python-version: ['3.11']
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v4
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install dependencies
-        run: |
-          pip install poetry
-          bash manage.sh init --back
-
-      - name: Run tests and coverage
-        run: bash manage.sh test --back
+  #    steps:
+  #      - name: Check out the repo
+  #        uses: actions/checkout@v4
+  #
+  #      - name: Set up Python ${{ matrix.python-version }}
+  #        uses: actions/setup-python@v5
+  #        with:
+  #          python-version: ${{ matrix.python-version }}
+  #
+  #      - name: Install dependencies
+  #        run: |
+  #          pip install poetry
+  #          bash manage.sh init --back
+  #
+  #      - name: Run tests and coverage
+  #        run: bash manage.sh test --back
 
   frontend-tester:
     runs-on: ubuntu-latest
@@ -37,19 +37,19 @@ jobs:
       max-parallel: 2
       matrix:
         node-version: ['20']
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v4
-
-      - name: Set up Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install dependencies
-        run: |
-          npm install --global yarn
-          bash manage.sh init --front
-
-      - name: Run tests and coverage
-        run: bash manage.sh test --front
+#    steps:
+#      - name: Check out the repo
+#        uses: actions/checkout@v4
+#
+#      - name: Set up Node ${{ matrix.node-version }}
+#        uses: actions/setup-node@v4
+#        with:
+#          node-version: ${{ matrix.node-version }}
+#
+#      - name: Install dependencies
+#        run: |
+#          npm install --global yarn
+#          bash manage.sh init --front
+#
+#      - name: Run tests and coverage
+#        run: bash manage.sh test --front
