@@ -48,3 +48,12 @@ TEXT_LOGO_FORMAT = r"""
     / /_/ / / / /  __/   ___/ / / /_/  __/
     \____/_/ /_/\___/   /____/_/\__/\___/   %s
 """
+
+PATH_LOGIN = "/login"
+PATH_USER = "/user"
+
+JWT_ALGORITHM = "HS256"
+
+HEADER_NAME_AUTHENTICATE = "WWW-Authenticate"
+
+HEADER_TYPE_TOKEN_BEARER = "Bearer"

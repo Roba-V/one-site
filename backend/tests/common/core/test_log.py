@@ -2,8 +2,8 @@ import sys
 import unittest
 from unittest.mock import MagicMock, patch
 
-from backend.common.core.exceptions import LogError
 from backend.common.core.log import Log
+from backend.common.exceptions import LogError
 
 
 class LogTestCase(unittest.TestCase):

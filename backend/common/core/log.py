@@ -19,7 +19,7 @@ import fastapi.logger
 from backend.common import constants as cst
 from backend.common import messages as msg
 from backend.common.core.config import Configuration, config
-from backend.common.core.exceptions import LogError
+from backend.common.exceptions import LogError
 
 
 class Log:
