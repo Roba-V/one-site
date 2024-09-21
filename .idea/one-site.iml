@@ -6,6 +6,7 @@
       <excludeFolder url="file://$MODULE_DIR$/backend/htmlcov" />
       <excludeFolder url="file://$MODULE_DIR$/frontend/node_modules" />
       <excludeFolder url="file://$MODULE_DIR$/logs" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/MagicMock" />
     </content>
     <orderEntry type="jdk" jdkName="Poetry (one-site)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
