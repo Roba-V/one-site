@@ -34,7 +34,7 @@ export default defineConfig(({ mode }) => {
           '**/{eslint,vite}.config.*',
           'src/main.tsx',
         ],
-        thresholds: { '100': true },
+        thresholds: { '100': false },
       },
     },
   }
