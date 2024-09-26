@@ -1438,6 +1438,17 @@ anyio = ">=3.4.0,<5"
 full = ["httpx (>=0.22.0)", "itsdangerous", "jinja2", "python-multipart (>=0.0.7)", "pyyaml"]
 
 [[package]]
+name = "types-passlib"
+version = "1.7.7.20240819"
+description = "Typing stubs for passlib"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "types-passlib-1.7.7.20240819.tar.gz", hash = "sha256:8fc8df71623845032293d5cf7f8091f0adfeba02d387a2888684b8413f14b3d0"},
+    {file = "types_passlib-1.7.7.20240819-py3-none-any.whl", hash = "sha256:c4d299083497b66e12258c7b77c08952574213fdf7009da3135d8181a6a25f23"},
+]
+
+[[package]]
 name = "typing-extensions"
 version = "4.12.2"
 description = "Backported and Experimental Type Hints for Python 3.8+"
@@ -1718,4 +1729,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "e2d12fdcb0f60161ffd517e215831a98f83106f1f711fd09dcc31f9d02784f3d"
+content-hash = "a122390062e148f543f12a62507b266d6710cbe21d487d03b323cdef027b4d3d"
