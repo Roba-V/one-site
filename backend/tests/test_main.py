@@ -24,8 +24,8 @@ async def test_home(async_client) -> None:
     ----------
     async_client
     """
-    response = await async_client.get("/hello_world/")
+    response = await async_client.get("/hello")
 
     assert response.status_code == starlette.status.HTTP_200_OK
     response_obj = response.json()
-    assert response_obj["message"] == "Hello World!"
+    assert response_obj["message"] == "World!"

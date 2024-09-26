@@ -2,6 +2,13 @@
 # Log messages
 # --------------------------------------------------------------------------------------
 
+MSG_LOGIN = "LOGIN"
+MSG_USER = "USER"
+MSG_OTHER = "OTHER"
+
+# Error messages
+E_API_UNAUTHORIZED = "Not authorized."
+
 # Debug messages
 D_API_CFG_LOADED = "Loading configuration completed. [Details: %s]"
 

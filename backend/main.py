@@ -1,39 +1,22 @@
 from fastapi import FastAPI
-from starlette.middleware.cors import CORSMiddleware
 
 from backend.common import constants as cst
 from backend.common import messages as msg
 from backend.common.core.config import config
-from backend.common.core.log import logger
+from backend.common.core.extensions import init_app, lifespan
+from backend.routers import authentication, information, user
 
-logger.debug(msg.D_API_CFG_LOADED % config)
-logger.debug("Initialisation process completed.")
 app = FastAPI(
     debug=config.DEBUG,
     title=config.API_NAME,
     summary=config.API_SUMMARY,
     version=cst.API_VERSION,
     openapi_url=f"{config.API_URL}/openapi.json",
+    lifespan=lifespan,
 )
 
-# Set all CORS enabled origins
-if config.API_CORS_ORIGINS:
-    app.add_middleware(
-        CORSMiddleware,  # type: ignore
-        allow_origins=[str(origin).strip("/") for origin in config.API_CORS_ORIGINS],
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
+init_app(app)
 
-
-@app.get("/hello_world/")
-async def home():
-    """
-    Hello World API.
-
-    Returns
-    -------
-    """
-    logger.info("Hello World API Processing Start")
-    return {"message": "Hello World!"}
+app.include_router(authentication.router, tags=[msg.MSG_LOGIN])
+app.include_router(user.router, prefix=cst.PATH_USER, tags=[msg.MSG_USER])
+app.include_router(information.router, tags=[msg.MSG_OTHER])

@@ -10,12 +10,14 @@ from backend.common.utils import files
 class FilesTestCase(unittest.TestCase):
     """Utils files module's test cases."""
 
+    # path of test data
+    TEST_DIR = os.path.join(os.getcwd(), "test_dir")
     # path of temporary folder for saving test data
-    TMP_DIR = os.path.join(os.getcwd(), "test_dir", "tmp")
+    TMP_DIR = os.path.join(os.getcwd(), TEST_DIR, "tmp")
     # path of a non-existent folder for test
-    NOT_EXISTS_DIR = os.path.join(os.getcwd(), "test_dir", "tmp", "not_exists")
+    NOT_EXISTS_DIR = os.path.join(os.getcwd(), TEST_DIR, "tmp", "not_exists")
     # folder paths to create recursively
-    RECURSION_DIR = os.path.join(os.getcwd(), "test_dir", "tmp", "test1", "test2")
+    RECURSION_DIR = os.path.join(os.getcwd(), TEST_DIR, "tmp", "test1", "test2")
 
     def setUp(self) -> None:
         """Prepare in advance the directories and files to be used in this test
@@ -28,8 +30,8 @@ class FilesTestCase(unittest.TestCase):
         """Clean up the trash in the directories and files used in this test
         case."""
         # Delete the entire temporary directory for storing test files.
-        if os.path.isdir(self.TMP_DIR):
-            shutil.rmtree(self.TMP_DIR)
+        if os.path.isdir(self.TEST_DIR):
+            shutil.rmtree(self.TEST_DIR)
 
     @parameterized.expand(
         [
